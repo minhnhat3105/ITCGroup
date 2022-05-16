@@ -1,14 +1,33 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RazorPagesMovie.Models
 {
     public class Movie
     {
         public int Id { get; set; }
-        public string Title { get; set; }
-        [DataType(DataType.Date)]// not required to enter time to this field, only show date (not time)
+
+        [StringLength(60, MinimumLength = 3)]
+        [Required]
+        public string Title { get; set; } = string.Empty;
+
+        [Display(Name = "Release Date")] // display 'Release Date' instead of 'ReleaseDate'
+        [DataType(DataType.Date)] // not required to enter time to this field, only show date (not time)
         public DateTime ReleaseDate { get; set; }
-        public string Genre { get; set; }
+        
+        [Required]
+        [StringLength(30)]
+        [RegularExpression(@"^[A-Z]+[a-zA-Z\s]*$")]
+        public string Genre { get; set; } = string.Empty;
+        
+        [Range(1, 100)]
+        [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18, 2)")] // means that number of digits before comma are 18 and after comma is 2
         public decimal Price { get; set; }
+
+        [Required]
+        [RegularExpression(@"^[A-Z]+[a-zA-Z0-9""'\s-]+$")]
+        [StringLength(5)]
+        public string Rating { get; set; } = string.Empty;
     }
 }
